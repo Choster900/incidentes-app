@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('url', 100);
             // Referencia a la tabla incidentes
-            $table->foreignId('seguimiento_id')->constrained('seguimientos');
+            $table->foreignId('incidente_id')->constrained('incidentes');
             $table->timestamps();
         });
     }
