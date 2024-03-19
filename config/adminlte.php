@@ -15,7 +15,7 @@ return [
     */
 
     'title' => 'AdminLTE 3',
-    'title_prefix' => 'ShopApp |',
+    'title_prefix' => 'App | Incidentes',
     'title_postfix' => '',
 
     /*
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Shop</b>LTE',
+    'logo' => '<b>Incidentes</b> LTE',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -327,12 +327,12 @@ return [
                 ],
                 [
                     'text' => 'Roles',
-                    'route'  => 'departamentos.create',
+                    'route'  => 'roles.create',
                     'icon' => 'fas fa-fw fa-registered',
                 ],
                 [
                     'text' => 'Permisos',
-                    'route'  => 'departamentos.create',
+                    'route'  => 'permisos.create',
                     'icon' => 'fas fa-fw fa-registered',
                 ],
                 [
@@ -342,16 +342,33 @@ return [
                 ]     
             ],
         ],
+        [
+            'text'    => 'Gestión de incidentes',
+            'icon'    => 'fas fa-fw fa-list',
+            'submenu' => [
+                [
+                    'text' => 'Asignación de incidentes',
+                    'route'  => 'departamentos.create',
+                    'icon' => 'fas fa-fw fa-bars',
+                ],
+                [
+                    'text' => 'Otra opción',
+                    'route'  => 'departamentos.create',
+                    'icon' => 'fas fa-fw fa-registered',
+                ]    
+            ],
+        ],
+
        /* [
             'text' => 'Productos',
             'route' => 'departamentos.create',
             'icon' => 'fas fw fa-laptop',
-        ],*/
+        ],
         [
             'text' => 'Gestión de incidentes',
-            'url' => 'departamentos.create',
+            'url' => '/api/departamentos.create',
             'icon' => 'fas fw fa-shopping-cart',
-        ],
+        ],*/
         [
             'text'    => 'Reportes',
             'icon'    => 'fas fa-fw fa-area',

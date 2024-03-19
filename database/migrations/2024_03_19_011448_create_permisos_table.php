@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('permisos', function (Blueprint $table) {
             $table->id();
-            $table->string('permiso', 100);
+            $table->string('nombre', 100);
             $table->string('ruta', 150);
             $table->tinyInteger('agregar');
             $table->tinyInteger('editar');
