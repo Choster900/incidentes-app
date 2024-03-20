@@ -14,7 +14,7 @@ class DepartamentoController extends Controller
     {
         try{
             $departamentos = Departamento::all();
-            return response()->json($departamentos); 
+            return response()->json($departamentos);
         }catch(\Exception $e){
             return $e->getMessage();
         }
@@ -41,19 +41,19 @@ class DepartamentoController extends Controller
                 return response()->json(["status"=> 'conflict', "data"=> null,
             "message"=>'Ya existe un departamento con este nombre'],409);
             }
-                
+
             $departamento = new Departamento();
             $departamento->nombre = $request->nombre;
             if($departamento->save() >0){
-                return response()->json(["status"=> 'Created', 
+                return response()->json(["status"=> 'Created',
                 "data"=> $departamento, "message"=>'Departamento registrado'],201);
             }else{
                 return response()->json(["status"=> 'fail',"data"=> null,
                "message"=>"Error al intentar guardar el departamento"],409);
-            }            
+            }
         }catch(\Exception $e){
             return $e->getMessage();
-        }        
+        }
     }
 
     /**
@@ -98,7 +98,7 @@ class DepartamentoController extends Controller
                     return response()->json(["status"=> 'fail',"data"=> null,
                     "message"=>"Error al intentar guardar el departamento"],409);
                 }
-            }           
+            }
         }catch(\Exception $e){
             return $e->getMessage();
         }

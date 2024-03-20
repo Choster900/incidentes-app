@@ -339,13 +339,18 @@ return [
                     'text' => 'Usuarios',
                     'route'  => 'departamentos.create',
                     'icon' => 'fas fa-fw fa-registered',
-                ]     
+                ]
             ],
         ],
         [
             'text'    => 'Gestión de incidentes',
             'icon'    => 'fas fa-fw fa-list',
             'submenu' => [
+                [
+                    'text' => 'Nuevo incidente',
+                    'route'  => 'incidente.index',
+                    'icon' => 'fas fa-fw fa-bars',
+                ],
                 [
                     'text' => 'Asignación de incidentes',
                     'route'  => 'departamentos.create',
@@ -355,7 +360,7 @@ return [
                     'text' => 'Otra opción',
                     'route'  => 'departamentos.create',
                     'icon' => 'fas fa-fw fa-registered',
-                ]    
+                ]
             ],
         ],
 
@@ -384,7 +389,7 @@ return [
                     'icon' => 'fas fa-fw fa-bar',
                 ],
 
-                
+
             ],
         ],
     ],

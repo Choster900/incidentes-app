@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class IncidenteController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,9 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('auth.login');
+        return view('admin.crearIncidente');
     }
-    public function dash(){
+    /* public function dash(){
         return view('admin.index');
-    }
+    } */
 }
