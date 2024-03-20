@@ -21,9 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::resource('departamentos',DepartamentoController::class);
-Route::resource('incidente',IncidenteController::class);
-Route::resource('roles',RolController::class);
-Route::resource('permisos',PermisoController::class);
 
-
+// Rutas protegidas que requieren autenticación de API
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('departamentos', DepartamentoController::class);
+    Route::resource('incidente', IncidenteController::class);
+    Route::resource('roles', RolController::class);
+    Route::resource('permisos', PermisoController::class);
+});

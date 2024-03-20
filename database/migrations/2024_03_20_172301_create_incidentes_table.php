@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('descripcion', 600);
             // Referencia a la tabla usuarios
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('usuario_id')->constrained('usuarios');
             // Referencia a la tabla usuarios
-            $table->foreignId('tecnico_id')->nullable()->constrained('users');
+            $table->foreignId('tecnico_id')->nullable()->constrained('usuarios');
             $table->integer('estado');
             $table->date('fecha_registro');
             $table->timestamps();
