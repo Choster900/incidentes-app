@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usuarios', function (Blueprint $table) {
+        Schema::create('roles_permisos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 60);
-            $table->string('apellido', 60);
-            $table->string('clave', 100);
-            $table->string('correo', 100);
-            $table->string('estado', 1);
             // Referencia a la tabla roles
             $table->foreignId('rol_id')->constrained('roles');
-            // Referencia a la tabla departamento
-            $table->foreignId('departamento_id')->constrained('departamentos');
+            // Referencia a la tabla permisos
+            $table->foreignId('permiso_id')->constrained('permisos');
             $table->timestamps();
         });
     }
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('roles_permisos');
     }
 };

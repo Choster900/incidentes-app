@@ -11,7 +11,7 @@ import axios from 'axios';
 import VueSweetalert2 from 'vue-sweetalert2';
 
 //importaciones de primevue
-import PrimeVue from 'primevue/config'git 
+import PrimeVue from 'primevue/config' 
 
 import Button from "primevue/button";
 import AutoComplete from 'primevue/autocomplete';
