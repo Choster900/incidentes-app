@@ -18,26 +18,26 @@
                 </template>
             </Toolbar>
 
-            <DataTable ref="dt" :value="roles" v-model="search" dataKey="id"
+            <DataTable ref="dt" :value="departamentos" v-model="search" dataKey="id"
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-                currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} permisos">
+                currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} departamentos">
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="nombre" header="Rol" sortable style="min-width:12rem"></Column>
+                <Column field="nombre" header="Departamento" sortable style="min-width:12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
-                        <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editRol(slotProps.data)" />
-                        <Button icon="pi pi-trash" outlined rounded severity="danger" @click="DeleteRol(slotProps.data)" />
+                        <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editDepartamento(slotProps.data)" />
+                        <Button icon="pi pi-trash" outlined rounded severity="danger" @click="DeleteDepartamento(slotProps.data)" />
                     </template>
                 </Column>
             </DataTable>
         </div>
 
-        <Dialog v-model:visible="permisoDialog" :style="{width: '450px'}" header="Administración de permisos" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="departamentoDialog" :style="{width: '450px'}" header="Administración de departamentos" :modal="true" class="p-fluid">
             <div class="field">
                 <label for="name">Nombre</label>
-                <InputText id="permiso" v-model.trim="permiso.nombre" required="true" autofocus :class="{'p-invalid': submitted && !permiso.nombre}" />
-                <small class="p-error" v-if="submitted && !permiso.permiso">Nombre de permiso es requerido.</small>
+                <InputText id="nombre" v-model.trim="departamento.nombre" required="true" autofocus :class="{'p-invalid': submitted && !departamento.nombre}" />
+                <small class="p-error" v-if="submitted && !departamento.nombre">Nombre de departamento es requerido.</small>
             </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog"/>
@@ -55,15 +55,15 @@ import { useToast } from 'primevue/usetoast';
 export default {
         data(){
            return{
-            permisos: [],
-            permiso:{
+            departamentos: [],
+            departamento:{
                 id:null,
                 nombre:""
             },
-            editedPermiso:-1,
+            editedDepartamento:-1,
             search:'',
             submitted: false,
-            permisoDialog: ref(false)
+            departamentoDialog: ref(false)
            }
         },
         computed:{
@@ -75,49 +75,49 @@ export default {
             }   */
         },
         methods:{
-            async fetchPermisos(){
-                await this.axios.get(`/api/permisos`)
+            async fetchDepartamentos(){
+                await this.axios.get(`/api/departamentos`)
                 .then(response => {
                     console.log(response.data);
-                    this.permisos = response.data;
+                    this.departamentos = response.data;
                 })
             },
 
             openNew(){
-                this.rol = {},
+                this.departamento = {},
                 this.submitted = false,
-                this.rolDialog = true
+                this.departamentoDialog = true
             },
-            editRol(rol){
-                this.rol = {...rol},
-                this.rolDialog = true,
-                this.editedRol = this.roles.indexOf(rol);
+            editDepartamento(departamento){
+                this.departamento = {...departamento},
+                this.departamentoDialog = true,
+                this.editedDepartamento = this.departamentos.indexOf(departamento);
             },
-            editedRol(rol){
-                this.rol = {...rol},
-                this.rolDialog = true,
-                this.editedRol = this.roles.indexOf(rol);
+            editedDepartamento(departamento){
+                this.departamento = {...departamento},
+                this.departamentoDialog = true,
+                this.editedDepartamento = this.departamentos.indexOf(departamento);
             },
 
             hideDialog(){
-                this.rolDialog = false
+                this.departamentoDialog = false
                 this.submitted = false
             },
             async saveOrUpdate(){
                 let me = this;
                 me.submitted = true;
 
-                if(me.rol.nombre){
-                   let accion = me.rol.id == null? "add":"upd";
+                if(me.departamento.nombre){
+                   let accion = me.departamento.id == null? "add":"upd";
                    //console.log(accion);
                    if(accion == "add"){
-                       //peticion para guardar una rol
+                       //peticion para guardar una marca
                        /*if(this.existCategoria(me.categoria)){
                          alert("Ya existe una categoria registrada con este nombre en la base de datos");
                          return;
                        }*/
 
-                       await this.axios.post(`/api/roles`,me.rol)
+                       await this.axios.post(`/api/departamentos`,me.departamento)
                        .then(response =>{
                            if(response.status == 201){
                                me.verificarAccion(response.data.data, response.status, accion, response.data.message);
@@ -132,7 +132,7 @@ export default {
                          return;
                        }*/
                     //peticion para actualizar marcas
-                    await this.axios.put(`/api/roles/${me.rol.id}`,me.rol)
+                    await this.axios.put(`/api/departamentos/${me.departamento.id}`,me.departamento)
                        .then(response =>{
                            if(response.status == 202){
                                me.verificarAccion(response.data.data, response.status, accion, response.data.message);
@@ -142,11 +142,11 @@ export default {
                         console.log(errors);
                        })
                    }
-                   me.rolDialog = false;
-                   me.rol = {};
+                   me.departamentoDialog = false;
+                   me.departamento = {};
                 }
             },
-            async DeleteRol(rol){
+            async DeleteDepartamento(departamento){
                 let me = this;
 
                 this.$swal.fire({
@@ -160,8 +160,8 @@ export default {
                     cancelButtonText: 'No'
                 }).then((result)=>{
                     if(result.value){
-                        me.editedRol = me.roles.indexOf(rol);
-                        this.axios.delete(`/api/roles/${rol.id}`)
+                        me.editedDepartamento = me.departamentos.indexOf(departamento);
+                        this.axios.delete(`/api/departamentos/${departamento.id}`)
                         .then(response=>{
                             me.verificarAccion(null, response.status,"del",response.data.message);
                         }).catch(errors=>{
@@ -171,11 +171,11 @@ export default {
                 })
             },
             //metodo para verificar sin existe un objeto dentro de un arreglo
-            existRol(departamento){
+            existDepartamento(departamento){
                 let me = this;
-                return me.roles.some(obj => obj.nombre === rol.nombre);
+                return me.departamentos.some(obj => obj.nombre === departamento.nombre);
             },
-            verificarAccion(rol, statusCode, accion, message){
+            verificarAccion(departamento, statusCode, accion, message){
                 let me = this;
                 const Toast = this.$swal.mixin({
                     toast: true,
@@ -187,14 +187,14 @@ export default {
 
                 switch(accion){
                     case "add":
-                        me.roles.unshift(rol);
+                        me.departamentos.unshift(departamento);
                         Toast.fire({
                             icon: 'success',
                             title: message
                         });
                         break;
                     case "upd":
-                        Object.assign(me.roles[me.editedRol],this.rol);
+                        Object.assign(me.departamentos[me.editedDepartamento],this.departamento);
                         Toast.fire({
                             icon: 'success',
                             title: message
@@ -202,7 +202,7 @@ export default {
                         break;
                     case "del":
                         if(statusCode == 205){
-                            me.roles.splice(this.editedRol,1);
+                            me.departamentos.splice(this.editedDepartamento,1);
                             Toast.fire({
                                icon: 'success',
                                title: "Registro eliminado"
@@ -210,7 +210,7 @@ export default {
                         }else{
                             this.$swal.fire({
                                icon: 'error',
-                               title: 'No se puede eliminar este rol, existen registros asociados con él.'
+                               title: 'No se puede eliminar esta departamento, existen registros asociados con él.'
                             });
                         }
                         break;
@@ -219,7 +219,7 @@ export default {
             }
         },
         mounted() {
-            this.fetchRoles();
+            this.fetchDepartamentos();
             console.log('Component mounted.')
         }
     }

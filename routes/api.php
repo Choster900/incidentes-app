@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\IncidenteController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\RolController;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::resource('departamentos',DepartamentoController::class);
+Route::resource('incidente',IncidenteController::class);
 Route::resource('roles',RolController::class);
 Route::resource('permisos',PermisoController::class);
 
