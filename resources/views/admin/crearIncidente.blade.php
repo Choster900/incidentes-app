@@ -3,7 +3,7 @@
 @section('title', 'Departamentos | Administracion')
 
 @section('content_header')
-    <h4>CREAR NUEVO INCIDENTE</h4>
+    <h4>Administra los incidentes</h4>
 @stop
 
 @section('content')
