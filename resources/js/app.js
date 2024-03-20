@@ -58,6 +58,9 @@ import DepartamentoComponent from './components/DepartamentoComponent.vue';
 app.component('departamento-component', DepartamentoComponent);
 import RolComponent from './components/RolComponent.vue';
 app.component('rol-component', RolComponent);
+//Importando componente de Login
+import LoginComponent from './components/LoginComponent.vue';
+app.component('login-component', LoginComponent);
 
 
 
