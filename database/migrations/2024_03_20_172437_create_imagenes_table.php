@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles_permisos', function (Blueprint $table) {
+        Schema::create('imagenes', function (Blueprint $table) {
             $table->id();
-            // Referencia a la tabla roles
-            $table->foreignId('rol_id')->constrained('roles');
-            // Referencia a la tabla permisos
-            $table->foreignId('permiso_id')->constrained('permisos');
+            $table->string('url', 100);
+            // Referencia a la tabla incidentes
+            $table->foreignId('incidente_id')->constrained('incidentes');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles_permisos');
+        Schema::dropIfExists('imagenes');
     }
 };
