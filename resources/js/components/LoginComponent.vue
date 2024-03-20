@@ -1,34 +1,22 @@
 <template>
   <div class="container">
-    <div class="image-container">
-      <img src="/img/default-prof.png" alt="Logo" class="logo">
+    <div class="content">
+      <div class="image-container">
+        <img src="/img/default-prof.png" alt="Logo" class="logo">
+      </div>
+      <h2>Inicio de sesión</h2>
+      <form method="POST" action="{{ route('login') }}">
+        <div class="form-group">
+          <input v-model="formData.email" placeholder="Correo Electrónico" type="email" id="email" name="email"
+            class="form-control" required />
+        </div>
+        <div class="form-group">
+          <input v-model="formData.password" placeholder="Contraseña" type="password" id="password" name="password"
+            class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+      </form>
     </div>
-    <h2>Inicio de sesión</h2>
-    <form @submit.prevent="processLogin">
-      <div class="form-group">
-        <input
-          v-model="formData.email"
-          placeholder="Correo Electrónico"
-          type="email"
-          id="correo"
-          name="correo"
-          class="form-control"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <input
-          v-model="formData.password"
-          placeholder="Contraseña"
-          type="password"
-          id="password"
-          name="password"
-          class="form-control"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-primary">Aceptar</button>
-    </form>
   </div>
 </template>
 
@@ -42,25 +30,23 @@ export default {
       },
     }
   },
-  methods: {
-    processLogin() {
-      // Aquí puedes agregar la lógica para enviar los datos del formulario
-      // al servidor o realizar cualquier otra acción necesaria
-      console.log('Email:', this.formData.email)
-      console.log('Password:', this.formData.password)
-    }
-  }
 }
 </script>
 
 <style scoped>
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.content {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 10px 80px 30px 80px;
   border-radius: 10px;
   text-align: center;
   max-width: 400px;
-  margin: 0 auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -106,7 +92,7 @@ export default {
 }
 
 .logo {
-  max-width: 150px; /* Ajusta el tamaño máximo de la imagen según tus necesidades */
+  max-width: 150px;
   height: auto;
 }
 </style>
