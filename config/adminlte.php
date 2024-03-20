@@ -348,7 +348,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Nuevo incidente',
-                    'route'  => 'incidente.index',
+                    'route'  => 'incidente.create',
                     'icon' => 'fas fa-fw fa-bars',
                 ],
                 [

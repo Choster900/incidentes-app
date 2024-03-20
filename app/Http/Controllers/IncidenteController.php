@@ -23,6 +23,11 @@ class IncidenteController extends Controller
      */
     public function index()
     {
+        //return view('admin.crearIncidente');
+    }
+
+    public function create()
+    {
         return view('admin.crearIncidente');
     }
     /* public function dash(){

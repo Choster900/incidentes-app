@@ -39,32 +39,32 @@
                 <InputText id="nombre" v-model.trim="permiso.nombre" required="true" autofocus :class="{'p-invalid': submitted && !permiso.nombre}" />
                 <small class="p-error" v-if="submitted && !permiso.nombre">Nombre de permiso es requerido.</small>
             </div>
-            <div class="field">
+            <!--<div class="field">
                 <label for="ruta">Ruta</label>
                 <InputText id="ruta" v-model.trim="permiso.ruta" required="true" autofocus :class="{'p-invalid': submitted && !permiso.ruta}" />
                 <small class="p-error" v-if="submitted && !permiso.ruta">Ruta es requerido.</small>
+            </div> -->
+            <!--<div class="formgrid grid row">
+                <div class="field col">
+                    <Checkbox v-model="permiso.agregar" :binary="true" />
+                    <label for="agregar" class="ml-2"> Agregar </label>
+                </div>
+                <div class="field col">
+                    <Checkbox v-model="permiso.editar" :binary="true" />
+                    <label for="editar" class="ml-2"> Editar </label>
+                </div>                                 
             </div> 
-            <div class="card flex flex-wrap justify-content-center gap-3">
-                <div class="card flex flex-wrap justify-content-center gap-3">
-                    <div class="flex align-items-center">
-                        <Checkbox v-model="opciones" inputId="agregar" name="opciones" value="add" />
-                        <label for="ingredient1" class="ml-2"> Agregar </label>
-                    </div>
-                    <div class="flex align-items-center">
-                        <Checkbox v-model="opciones" inputId="editar" name="opciones" value="upd" />
-                        <label for="ingredient2" class="ml-2"> Editar </label>
-                    </div>
-                    <div class="flex align-items-center">
-                        <Checkbox v-model="opciones" inputId="listar" name="opciones" value="sho" />
-                        <label for="ingredient3" class="ml-2"> Listar </label>
-                    </div>
-                    <div class="flex align-items-center">
-                        <Checkbox v-model="opciones" inputId="eliminar" name="opciones" value="del" />
-                        <label for="ingredient4" class="ml-2"> Eliminar </label>
-                    </div>
-                </div>   
-                {{ opciones }}             
-            </div>                         
+            <br>
+            <div class="formgrid grid row">
+                <div class="field col">
+                    <Checkbox v-model="permiso.listar" :binary="true" />
+                    <label for="listar" class="ml-2"> Listar </label>
+                </div> 
+                <div class="field col">
+                    <Checkbox v-model="permiso.eliminar" :binary="true" />
+                    <label for="eliminar" class="ml-2"> Eliminar </label>
+                </div> 
+            </div> -->                                    
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog"/>
                 <Button label="Guardar" icon="pi pi-check" text @click="probar" />
@@ -85,10 +85,11 @@ export default {
             permiso:{
                 id:null,
                 nombre:"",
-                agregar:this.getAgregar,
-                editar:ref(true),
-                listar:ref(true),
-                eliminar:ref(true)
+                ruta:"",
+                agregar: false,
+                editar:false,
+                listar:false,
+                eliminar:false
             },
             opciones:[],
             editedPermiso:-1,
@@ -113,25 +114,41 @@ export default {
                     this.permisos = response.data;
                 })
             },
-
+            resetPermiso(){
+                this.permiso.id = null,
+                this.permiso.nombre="",
+                this.permiso.ruta="",
+                this.permiso.agregar= false,
+                this.permiso.editar=false,
+                this.permiso.listar=false,
+                this.permiso.eliminar=false
+            },
             openNew(){
-                this.permiso = {},
+                //this.permiso = {},
+                this.resetPermiso,
                 this.submitted = false,
                 this.permisoDialog = true
             },
-            editRol(rol){
-                this.rol = {...rol},
-                this.rolDialog = true,                
-                this.editedRol = this.roles.indexOf(rol);
+            probar(){
+                //this.permiso = {}
+                console.log(this.permiso);
+                this.submitted = true,
+                this.permisoDialog = false,
+                this.permiso = {}
+            },            
+            editPermiso(permiso){
+                this.permiso = {...permiso},
+                this.permisoDialog = true,                
+                this.editedPermiso = this.permisos.indexOf(permiso);
             },             
-            editedRol(rol){
-                this.rol = {...rol},
-                this.rolDialog = true,                
-                this.editedRol = this.roles.indexOf(rol);
+            editedPermiso(permiso){
+                this.permiso = {...permiso},
+                this.permisoDialog = true,                
+                this.editedPermiso = this.permisos.indexOf(permiso);
             },            
 
             hideDialog(){
-                this.rolDialog = false 
+                this.permisoDialog = false 
                 this.submitted = false                           
             }, 
             async saveOrUpdate(){
