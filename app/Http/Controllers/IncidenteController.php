@@ -27,7 +27,12 @@ class IncidenteController extends Controller
      */
     public function index()
     {
-        //return view('admin.crearIncidente');
+        try{
+            $incidentes = Incidente::with(['imagenes','seguimientos','usuario'])->get();
+            return response()->json($incidentes);
+        }catch(\Exception $e){
+            return $e->getMessage();
+        }
     }
 
     public function create()
@@ -66,11 +71,11 @@ class IncidenteController extends Controller
                     $name = $file->getClientOriginalName();
                     // Generar un nombre único para el archivo
                     $currentTimestamp = time();
-                    $nameFile = date('Y-m-d His', $currentTimestamp) . '.' . $file->getClientOriginalExtension();
+                    $nameFile = date('Y-m-d His', $currentTimestamp). '.' . $file->getClientOriginalExtension();
                     // Almacenar el archivo en el directorio 'imagenes' dentro del disco 'public'
-                    $file->storeAs('imagenes', $nameFile, 'public');
+                    $file->storeAs('imagenes', $name, 'public');
                     // Generar la URL completa para el archivo almacenado
-                    $imageUrl = asset('storage/imagenes/' . $nameFile); // Asegúrate de que la ruta sea correcta según la configuración de tu sistema de archivos
+                    $imageUrl = asset('storage/imagenes/'.$name); // Asegúrate de que la ruta sea correcta según la configuración de tu sistema de archivos
                     // Agregar la URL al array de URLs de imágenes
                     $imageUrls[] = $imageUrl;
                 }
