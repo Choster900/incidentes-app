@@ -58,14 +58,14 @@ import DepartamentoComponent from './components/DepartamentoComponent.vue';
 app.component('departamento-component', DepartamentoComponent);
 import RolComponent from './components/RolComponent.vue';
 app.component('rol-component', RolComponent);
+import IncidenteComponent from './components/IncidenteComponent.vue';
+app.component('incidente-component', IncidenteComponent);
 import PermisoComponent from './components/PermisoComponent.vue';
 app.component('permiso-component', PermisoComponent);
 import LoginComponent from './components/LoginComponent.vue';
 app.component('login-component', LoginComponent);
 import IncidenteComponent from './components/IncidenteComponent.vue';
 app.component('incidente-component', IncidenteComponent);
-
-
 
 /**
  * The following block of code may be used to automatically register your
