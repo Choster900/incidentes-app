@@ -23,7 +23,7 @@
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} permisos">
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="nombre" header="Rol" sortable style="min-width:12rem"></Column>
+                <Column field="nombre" header="Permiso" sortable style="min-width:12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
                         <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPermiso(slotProps.data)" />
@@ -39,12 +39,12 @@
                 <InputText id="nombre" v-model.trim="permiso.nombre" required="true" autofocus :class="{'p-invalid': submitted && !permiso.nombre}" />
                 <small class="p-error" v-if="submitted && !permiso.nombre">Nombre de permiso es requerido.</small>
             </div>
-            <!--<div class="field">
+            <div class="field">
                 <label for="ruta">Ruta</label>
                 <InputText id="ruta" v-model.trim="permiso.ruta" required="true" autofocus :class="{'p-invalid': submitted && !permiso.ruta}" />
                 <small class="p-error" v-if="submitted && !permiso.ruta">Ruta es requerido.</small>
-            </div> -->
-            <!--<div class="formgrid grid row">
+            </div>
+            <div class="formgrid grid row">
                 <div class="field col">
                     <Checkbox v-model="permiso.agregar" :binary="true" />
                     <label for="agregar" class="ml-2"> Agregar </label>
@@ -64,10 +64,11 @@
                     <Checkbox v-model="permiso.eliminar" :binary="true" />
                     <label for="eliminar" class="ml-2"> Eliminar </label>
                 </div> 
-            </div> -->                                    
+            </div>
+            <small class="p-error" v-if="submitted && (!permiso.agregar && !permiso.editar && !permiso.listar && !permiso.eliminar)">Debe seleccionar por lo menos una opción.</small>                                     
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog"/>
-                <Button label="Guardar" icon="pi pi-check" text @click="probar" />
+                <Button label="Guardar" icon="pi pi-check" text @click="saveOrUpdate" />
             </template>
         </Dialog>
 	</div>
@@ -124,18 +125,18 @@ export default {
                 this.permiso.eliminar=false
             },
             openNew(){
-                //this.permiso = {},
-                this.resetPermiso,
+                this.permiso = {},
+                //this.resetPermiso,
                 this.submitted = false,
                 this.permisoDialog = true
             },
-            probar(){
+            /*probar(){
                 //this.permiso = {}
                 console.log(this.permiso);
                 this.submitted = true,
                 this.permisoDialog = false,
                 this.permiso = {}
-            },            
+            }, */           
             editPermiso(permiso){
                 this.permiso = {...permiso},
                 this.permisoDialog = true,                
@@ -154,8 +155,9 @@ export default {
             async saveOrUpdate(){
                 let me = this;
                 me.submitted = true;
+                console.log(this.permiso);
 
-                if(me.permiso.nombre){
+                if(me.permiso.nombre && me.permiso.ruta && (me.permiso.agregar || me.permiso.editar || me.permiso.listar || me.permiso.eliminar)){
                    let accion = me.permiso.id == null? "add":"upd";
                    //console.log(accion);
                    if(accion == "add"){

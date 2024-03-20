@@ -36,15 +36,24 @@ class PermisoController extends Controller
     {
         try{
             $nombre = $request->input("nombre");
+            //dd($request->input("nombre"));
             $record = Permiso::where("nombre", $nombre)->first();
 
             if($record){
                 return response()->json(["status"=> 'conflict', "data"=> null,
             "message"=>'Ya existe un permiso con ese nombre'],409);
             }
-                
+
+            //creamos la instancia de permiso y llenamos el objeto
             $permiso = new Permiso();
             $permiso->nombre = $request->nombre;
+            $permiso->ruta = $request->ruta;
+            $permiso->agregar = $request->agregar;
+            $permiso->editar = $request->editar;
+            $permiso->listar = $request->listar;
+            $permiso->eliminar = $request->eliminar;
+            //$result = $permiso->save();            
+                
             if($permiso->save() >0){
                 return response()->json(["status"=> 'Created', 
                 "data"=> $permiso, "message"=>'Permiso registrado'],201);
