@@ -64,8 +64,6 @@ import PermisoComponent from './components/PermisoComponent.vue';
 app.component('permiso-component', PermisoComponent);
 import LoginComponent from './components/LoginComponent.vue';
 app.component('login-component', LoginComponent);
-import IncidenteComponent from './components/IncidenteComponent.vue';
-app.component('incidente-component', IncidenteComponent);
 
 /**
  * The following block of code may be used to automatically register your
