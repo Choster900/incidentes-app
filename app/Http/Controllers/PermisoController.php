@@ -36,21 +36,21 @@ class PermisoController extends Controller
     {
         try{
             $nombre = $request->input("nombre");
-            $record = Departamento::where("nombre", $nombre)->first();
+            $record = Permiso::where("nombre", $nombre)->first();
 
             if($record){
                 return response()->json(["status"=> 'conflict', "data"=> null,
-            "message"=>'Ya existe un departamento con este nombre'],409);
+            "message"=>'Ya existe un permiso con ese nombre'],409);
             }
                 
-            $departamento = new Departamento();
-            $departamento->nombre = $request->nombre;
-            if($departamento->save() >0){
+            $permiso = new Permiso();
+            $permiso->nombre = $request->nombre;
+            if($permiso->save() >0){
                 return response()->json(["status"=> 'Created', 
-                "data"=> $departamento, "message"=>'Departamento registrado'],201);
+                "data"=> $permiso, "message"=>'Permiso registrado'],201);
             }else{
                 return response()->json(["status"=> 'fail',"data"=> null,
-               "message"=>"Error al intentar guardar el departamento"],409);
+               "message"=>"Error al intentar guardar el permiso"],409);
             }            
         }catch(\Exception $e){
             return $e->getMessage();
@@ -63,8 +63,8 @@ class PermisoController extends Controller
     public function show(string $id)
     {
         try{
-            $departamento = Departamento::findOrFail($id);
-            return response()->json($departamento);
+            $permiso = Permiso::findOrFail($id);
+            return response()->json($permiso);
         }catch(\Exception $e) {
             return $e->getMessage();
         }
@@ -85,19 +85,19 @@ class PermisoController extends Controller
     {
         try{
             $nombre = $request->input("nombre");
-            $record = Departamento::where("nombre", $nombre)->first();
+            $record = Permiso::where("nombre", $nombre)->first();
             if($record){
                 return response()->json(["status"=> 'conflict', "data"=> null,
-                "message"=>'Ya existe una departamento con este nombre'],409);
+                "message"=>'Ya existe una permiso con este nombre'],409);
             }else{
-                $departamento = Departamento::findOrFail($id);
-                $departamento->nombre = $request->nombre;
-                if($departamento->update() >0){
+                $permiso = Permiso::findOrFail($id);
+                $permiso->nombre = $request->nombre;
+                if($permiso->update() >0){
                     return response()->json(["status"=> 'Updated',
-                    "data"=> $departamento,"message"=>'Departamento actualizado...!'],202);
+                    "data"=> $permiso,"message"=>'Permiso actualizado...!'],202);
                 }else{
                     return response()->json(["status"=> 'fail',"data"=> null,
-                    "message"=>"Error al intentar guardar el departamento"],409);
+                    "message"=>"Error al intentar guardar el permiso"],409);
                 }
             }           
         }catch(\Exception $e){
@@ -111,13 +111,13 @@ class PermisoController extends Controller
     public function destroy(string $id)
     {
         try{
-            $departamento = Departamento::findOrFail($id);
-            if($departamento->delete()>0){
+            $permiso = Permiso::findOrFail($id);
+            if($permiso->delete()>0){
                 return response()->json(["status"=> 'Deleted',
-                "data"=> null,"message"=>'Departamento eliminado...!'],205);
+                "data"=> null,"message"=>'Permiso eliminado...!'],205);
             }else{
                 return response()->json(["status"=> 'Conflict',
-                "data"=> null,"message"=>' No se puede eliminar este departamento'],409);
+                "data"=> null,"message"=>' No se puede eliminar este permiso'],409);
             }
         }catch(\Exception $e){
             return $e->getMessage();
