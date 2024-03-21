@@ -323,7 +323,7 @@ return [
                 [
                     'text' => 'Departamentos',
                     'route'  => 'departamentos.create',
-                    'icon' => 'fas fa-fw fa-bars',
+                    'icon' => 'fas fa-fw fa-registered',
                 ],
                 [
                     'text' => 'Roles',
@@ -337,7 +337,7 @@ return [
                 ],
                 [
                     'text' => 'Usuarios',
-                    'route'  => 'departamentos.create',
+                    'route'  => 'users.create',
                     'icon' => 'fas fa-fw fa-registered',
                 ]
             ],
@@ -349,18 +349,18 @@ return [
                 [
                     'text' => 'Nuevo incidente',
                     'route'  => 'incidente.create',
-                    'icon' => 'fas fa-fw fa-bars',
+                    'icon' => 'fas fa-fw fa-registered',
                 ],
                 [
                     'text' => 'Asignación de incidentes',
                     'route'  => 'departamentos.create',
-                    'icon' => 'fas fa-fw fa-bars',
-                ],
-                [
-                    'text' => 'Otra opción',
-                    'route'  => 'departamentos.create',
                     'icon' => 'fas fa-fw fa-registered',
-                ]
+                ],
+                // [
+                //     'text' => 'Otra opción',
+                //     'route'  => 'departamentos.create',
+                //     'icon' => 'fas fa-fw fa-registered',
+                // ]
             ],
         ],
 
