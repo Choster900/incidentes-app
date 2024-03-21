@@ -4,7 +4,7 @@
             <Toolbar class="mb-4">
                 <template #start>
                     <Button label="Nuevo" icon="pi pi-plus" severity="success" class="mr-2"
-                        @click="incidenteDialog = !incidenteDialog" />
+                        @click="incidenteDialog = !incidenteDialog ; clearData()" />
                     <!--<Button label="Eliminar" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />-->
                 </template>
 
@@ -28,8 +28,10 @@
                 <Column field="usuario.apellido" header="usuario" sortable style="min-width: 12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
-                        <Button icon="pi pi-pencil" outlined rounded class="mr-2" />
-                        <Button icon="pi pi-trash" outlined rounded severity="danger" class="mr-2" />
+                        <Button icon="pi pi-pencil" outlined rounded class="mr-2"
+                            @click="setInfoForUpdate(slotProps.data); incidenteDialog = true" />
+                        <Button icon="pi pi-trash" outlined rounded severity="danger" class="mr-2"
+                            @click="deleteIncidente(slotProps.data.id)" />
                         <Button icon="pi pi-image" outlined rounded severity="info" @click="
                             dataIncidentes = slotProps.data;
                         mostrarImagenDialog = true;
@@ -46,13 +48,12 @@
                     <span>[ Nombre de usuario ] - [ Departamento ]</span>
                 </div>
                 <div class="formgrid grid row">
-                    <div class="field col-md-6 col-sm-6">
-                        <!-- Aquí estamos especificando que ocupe la mitad del ancho en dispositivos medianos y pequeños -->
+                   <!--  <div class="field col-md-6 col-sm-6">
+
                         <label for="marca">Tipo incidente</label>
                         <Dropdown :options="citizen" optionLabel="label" optionValue="value"
                             placeholder="Seleccione tipo incidente" />
-                        <!--  <small class="p-error" v-if="submitted && !producto.marca_id">Marca es requerido.</small> -->
-                    </div>
+                    </div> -->
                 </div>
                 <div class="field">
                     <label for="descripcion">Descripcion</label>
@@ -62,7 +63,7 @@
                 <div class="formgrid grid row">
                     <div class="field col">
                         <label for="imagenes">Imágenes</label>
-                        {{ incidente.imagenes }}
+                        <!-- {{ incidente.imagenes }} -->
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="imagenes" multiple accept="image/*"
                                 @change="getImages" />
@@ -74,14 +75,12 @@
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="incidenteDialog = false" />
                 <Button label="Guardar" icon="pi pi-check" text @click="createIncidente" />
+                <Button label="Modificar" icon="pi pi-check" text @click="updateIncidente" />
             </template>
         </Dialog>
 
         <Dialog v-model:visible="mostrarImagenDialog" :style="{ width: '575px' }" header="Imagenes de productos"
             :modal="true" class="p-fluid">
-            <!-- <pre>
-            {{ dataIncidentes.imagenes }}
-            </pre> -->
             <Carousel :value="dataIncidentes.imagenes" :numVisible="1" :numScroll="1" orientation="vertical"
                 verticalViewPortHeight="330px" contentClass="flex align-items-center">
                 <template #item="slotProps">
@@ -165,6 +164,25 @@ export default {
                 });
 
                 console.log("Respuesta del servidor:", resp.data);
+                this.getIncidente()
+                // Aquí puedes manejar la respuesta del servidor como desees
+            } catch (error) {
+                console.error("Error al subir el archivo:", error);
+
+                // Aquí puedes manejar el error como desees
+            }
+        },
+        async updateIncidente() {
+            try {
+
+                const resp = await axios.put(`/api/incidente/${this.incidente.id}`, this.incidente, /* {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                } */);
+
+                console.log("Respuesta del servidor:", resp.data);
+                this.getIncidente()
 
                 // Aquí puedes manejar la respuesta del servidor como desees
             } catch (error) {
@@ -173,6 +191,54 @@ export default {
                 // Aquí puedes manejar el error como desees
             }
         },
+        async deleteIncidente(incidenteId) {
+            console.log(incidenteId);
+
+            const confirmed = await this.$swal.fire({
+                title: 'Seguro/a de eliminar este registro',
+                text: 'No se podrá revertir la acción',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No'
+            });
+
+            if (confirmed.value) {
+                try {
+                    const response = await this.axios.delete(`/api/incidente/${incidenteId}`);
+                    console.log("Estatus: " + response.status);
+                    console.log("Data: ", response.data);
+                this.getIncidente()
+
+                    // Aquí puedes manejar la respuesta del servidor como desees
+                } catch (error) {
+                    console.error("Error al eliminar el incidente:", error);
+                    // Aquí puedes manejar el error como desees
+                }
+            }
+        },
+
+        clearData() {
+            this.incidente.id = ''
+            this.incidente.descripcion = ''
+            this.incidente.usuario_id = ''
+            this.incidente.id = ''
+            this.incidente.id = ''
+            this.incidente.imagenes = ''
+
+        },
+        setInfoForUpdate(data) {
+            console.log(data);
+            this.incidente.id = data.id;
+            this.incidente.descripcion = data.descripcion
+            this.incidente.usuario_id = data.id
+            this.incidente.id = data.id
+            this.incidente.id = data.id
+            this.incidente.imagenes = data.imagenes
+
+        }
     },
     mounted() {
         this.getIncidente();
