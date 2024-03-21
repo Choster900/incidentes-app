@@ -21,6 +21,13 @@ Route::get('/', function () {
 
 Route::get('/admin', [HomeController::class, 'dash'])->name('admin.dash');
 
-Auth::routes();
+// Rutas de autenticación (sin incluir la ruta de registro)
+Auth::routes([
+    'register' => false, // Inhabilitar la ruta de registro
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Rutas protegidas que requieren autenticación
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+
