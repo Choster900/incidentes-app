@@ -167,13 +167,20 @@ export default {
             this.user.nombres = ''
             this.user.apellidos = ''
             this.user.email = ''
+            this.user.password = ''
             this.user.rol.id = ''
             this.user.departamento.id = ''
             this.submitted = false
             this.rolDialog = true
         },
         editUser(user) {
-            this.user = { ...user }
+            this.user.id = user.id
+            this.user.name = user.name
+            this.user.nombres = user.nombres
+            this.user.apellidos = user.apellidos
+            this.user.email = user.email
+            this.user.rol.id = user.rol.id
+            this.user.departamento.id = user.departamento.id
             this.rolDialog = true
         },
         hideDialog() {

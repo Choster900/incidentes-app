@@ -20,7 +20,7 @@ class UsuariosSeeder extends Seeder
             'apellidos' => 'Doe',
             'email' => 'jdoe@example.com',
             'password' => bcrypt('12345678'),
-            'estado' => "I",
+            'estado' => "A",
             'rol_id' => 1,
             'departamento_id' => 1
             // Agrega otros campos de tu tabla 'usuarios' aquí
