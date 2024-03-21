@@ -27,10 +27,10 @@ class IncidenteController extends Controller
      */
     public function index()
     {
-        try{
-            $incidentes = Incidente::with(['imagenes','seguimientos','usuario'])->get();
+        try {
+            $incidentes = Incidente::with(['imagenes', 'seguimientos', 'usuario'])->get();
             return response()->json($incidentes);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -65,20 +65,20 @@ class IncidenteController extends Controller
             $imageUrls = []; // Inicializamos un array para almacenar las URL de las imágenes
 
 
-                // Iteramos sobre cada archivo recibido
-                foreach ( $request->file("imagenes") as $file ) {
-                    // Obtener el nombre original del archivo
-                    $name = $file->getClientOriginalName();
-                    // Generar un nombre único para el archivo
-                    $currentTimestamp = time();
-                    $nameFile = date('Y-m-d His', $currentTimestamp). '.' . $file->getClientOriginalExtension();
-                    // Almacenar el archivo en el directorio 'imagenes' dentro del disco 'public'
-                    $file->storeAs('imagenes', $name, 'public');
-                    // Generar la URL completa para el archivo almacenado
-                    $imageUrl = asset('storage/imagenes/'.$name); // Asegúrate de que la ruta sea correcta según la configuración de tu sistema de archivos
-                    // Agregar la URL al array de URLs de imágenes
-                    $imageUrls[] = $imageUrl;
-                }
+            // Iteramos sobre cada archivo recibido
+            foreach ( $request->file("imagenes") as $file ) {
+                // Obtener el nombre original del archivo
+                $name = $file->getClientOriginalName();
+                // Generar un nombre único para el archivo
+                $currentTimestamp = time();
+                $nameFile = date('Y-m-d His', $currentTimestamp) . '.' . $file->getClientOriginalExtension();
+                // Almacenar el archivo en el directorio 'imagenes' dentro del disco 'public'
+                $file->storeAs('imagenes', $name, 'public');
+                // Generar la URL completa para el archivo almacenado
+                $imageUrl = asset('storage/imagenes/' . $name); // Asegúrate de que la ruta sea correcta según la configuración de tu sistema de archivos
+                // Agregar la URL al array de URLs de imágenes
+                $imageUrls[] = $imageUrl;
+            }
 
 
             if ($incidente->save() > 0) {
@@ -93,10 +93,10 @@ class IncidenteController extends Controller
                 }
 
                 return response()->json([
-                    "status"    => 'Created',
-                    "data"      => $incidenteId,
-                    "PRUEBA" => $imageUrls,
-                    "message"   => 'Incidente registrado'
+                    "status"  => 'Created',
+                    "data"    => $incidenteId,
+                    "PRUEBA"  => $imageUrls,
+                    "message" => 'Incidente registrado'
                 ], 201);
             } else {
                 return response()->json([
@@ -109,4 +109,65 @@ class IncidenteController extends Controller
             return $e->getMessage();
         }
     }
+
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            //$descripcion = $request->descripcion;
+
+            // Buscar el incidente existente
+            $incidente = Incidente::findOrFail($id);
+
+            $incidente->descripcion = $request->input('descripcion');
+
+            // Guardar los cambios
+            $incidente->save();
+
+            // Verificar si se guardaron los cambios correctamente
+            if ($incidente->wasChanged()) {
+                $incidenteId = $incidente->id; // Aquí obtenemos el ID actualizado
+
+                return response()->json([
+                    "status"  => 'Updated',
+                    "data"    => $incidenteId,
+                    "message" => 'Incidente actualizado'
+                ], 200);
+            } else {
+                return response()->json([
+                    "status"  => 'fail',
+                    "data"    => null,
+                    "message" => $request,
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "status"  => 'error',
+                "RECIBIDO" => $request,
+
+            ], 500);
+        }
+    }
+
+
+     /**
+     * Remove the specified resource from storage.
+     * no se puede eliminar el incidente por la dependencia de las imagenes pero funciona
+     */
+    public function destroy(string $id)
+    {
+        try{
+            $incidente = Incidente::findOrFail($id);
+            if($incidente->delete()>0){
+                return response()->json(["status"=> 'Deleted',
+                "data"=> null,"message"=>'Departamento eliminado...!'],205);
+            }else{
+                return response()->json(["status"=> 'Conflict',
+                "data"=> null,"message"=>' No se puede eliminar este departamento'],409);
+            }
+        }catch(\Exception $e){
+            return $e->getMessage();
+        }
+    }
+
 }
