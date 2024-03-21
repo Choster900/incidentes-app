@@ -25,7 +25,8 @@ class User extends Authenticatable
         'apellidos',
         'email',
         'password',
-        'estado'
+        'estado',
+        'rol_id'
     ];
 
     /**
@@ -61,5 +62,19 @@ class User extends Authenticatable
     public function adminlte_profile_url()
     {
         return 'profile/username';
+    }
+
+    //relacion entre los modelos
+    public function departamento(){
+        return $this->belongsTo(Departamento::class);
+    } 
+
+    public function rol(){
+        return $this->belongsTo(Rol::class);
+    }    
+    
+    //relacion de 1:N con incidente
+    public function incidentes(){
+        return $this->hasMany(Incidente::class);
     }
 }

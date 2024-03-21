@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Departamento;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,17 +16,17 @@ class DepartamentosSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        $faker = Faker::create();
-        for ($i = 0; $i < 50; $i++) {
-            DB::table("departamentos")->insert(
-                array(
-                    'id'           => $faker->unique()->randomNumber,
-                    'departamento' => $faker->word,
-                    'created_at'   => Carbon::now(),
-                    'updated_at'   => Carbon::now()
-                )
-            );
-        }
+        Departamento::create([
+            'id' => 1,
+            'nombre' => 'Informatica',
+        ]);
+        Departamento::create([
+            'id' => 2,
+            'nombre' => 'Finanzas',
+        ]);
+        Departamento::create([
+            'id' => 3,
+            'nombre' => 'Contabilidad',
+        ]);
     }
 }

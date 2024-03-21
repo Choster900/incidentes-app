@@ -14,12 +14,15 @@ class UsuariosSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Admin',
-            'nombres' => 'Administrador',
-            'apellidos' => 'General',
-            'email' => 'admin@example.com',
+            'id' => 1,
+            'name' => 'JDoe',
+            'nombres' => 'John',
+            'apellidos' => 'Doe',
+            'email' => 'jdoe@example.com',
             'password' => bcrypt('12345678'),
-            'estado' => "I"
+            'estado' => "A",
+            'rol_id' => 1,
+            'departamento_id' => 1
             // Agrega otros campos de tu tabla 'usuarios' aquí
         ]);
     }
