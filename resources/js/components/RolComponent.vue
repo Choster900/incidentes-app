@@ -22,7 +22,7 @@
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} roles">
-                <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                <Column style="width: 3rem" :exportable="false"></Column>
                 <Column field="nombre" header="Rol" sortable style="min-width:12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
@@ -112,10 +112,10 @@ export default {
                    //console.log(accion);
                    if(accion == "add"){
                        //peticion para guardar una rol
-                       /*if(this.existCategoria(me.categoria)){
-                         alert("Ya existe una categoria registrada con este nombre en la base de datos");
+                       if(this.existRol(me.rol)){
+                         alert("Ya existe un rol registrado con este nombre en la base de datos");
                          return;
-                       }*/
+                       }
 
                        await this.axios.post(`/api/roles`,me.rol)
                        .then(response =>{
@@ -127,10 +127,10 @@ export default {
                        })
                    }else{
 
-                    /*if(this.existMarca(me.marca)){
-                         alert("Ya existe una marca registrada con este nombre en la base de datos");
+                    if(this.existRol(me.rol)){
+                         alert("Ya existe un rol registrado con este nombre en la base de datos");
                          return;
-                       }*/                    
+                       }                   
                     //peticion para actualizar marcas
                     await this.axios.put(`/api/roles/${me.rol.id}`,me.rol)
                        .then(response =>{
@@ -171,7 +171,7 @@ export default {
                 })
             },
             //metodo para verificar sin existe un objeto dentro de un arreglo
-            existRol(departamento){
+            existRol(rol){
                 let me = this;
                 return me.roles.some(obj => obj.nombre === rol.nombre);
             },

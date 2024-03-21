@@ -13,10 +13,10 @@ class PermisoController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             $permisos = Permiso::all();
-            return response()->json($permisos); 
-        }catch(\Exception $e){
+            return response()->json($permisos);
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -34,14 +34,15 @@ class PermisoController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $nombre = $request->input("nombre");
-            //dd($request->input("nombre"));
             $record = Permiso::where("nombre", $nombre)->first();
 
-            if($record){
-                return response()->json(["status"=> 'conflict', "data"=> null,
-            "message"=>'Ya existe un permiso con ese nombre'],409);
+            if ($record) {
+                return response()->json([
+                    "status" => 'conflict', "data" => null,
+                    "message" => 'Ya existe un permiso con ese nombre'
+                ], 409);
             }
 
             //creamos la instancia de permiso y llenamos el objeto
@@ -51,19 +52,20 @@ class PermisoController extends Controller
             $permiso->agregar = $request->agregar;
             $permiso->editar = $request->editar;
             $permiso->listar = $request->listar;
-            $permiso->eliminar = $request->eliminar;
-            //$result = $permiso->save();            
-                
-            if($permiso->save() >0){
-                return response()->json(["status"=> 'Created', 
-                "data"=> $permiso, "message"=>'Permiso registrado'],201);
-            }else{
-                return response()->json(["status"=> 'fail',"data"=> null,
-               "message"=>"Error al intentar guardar el permiso"],409);
-            }            
-        }catch(\Exception $e){
+            $permiso->eliminar = $request->eliminar;           
+
+            if ($permiso->save() > 0) {
+                return response()->json([
+                    "status" => 'Created',
+                    "data" => $permiso, "message" => 'Permiso registrado'
+                ], 201);
+            } else {
+                return response()->json(["status" => 'fail', "data" => null,
+                    "message" => "Error al intentar guardar el permiso"], 409);
+            }
+        } catch (\Exception $e) {
             return $e->getMessage();
-        }        
+        }
     }
 
     /**
@@ -71,10 +73,10 @@ class PermisoController extends Controller
      */
     public function show(string $id)
     {
-        try{
+        try {
             $permiso = Permiso::findOrFail($id);
             return response()->json($permiso);
-        }catch(\Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -92,24 +94,31 @@ class PermisoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        try{
+        try {
             $nombre = $request->input("nombre");
             $record = Permiso::where("nombre", $nombre)->first();
-            if($record){
-                return response()->json(["status"=> 'conflict', "data"=> null,
-                "message"=>'Ya existe una permiso con este nombre'],409);
-            }else{
+            if ($record && $record->id != $id) {
+                return response()->json(["status" => 'conflict', "data" => null,
+                    "message" => 'Ya existe una permiso con este nombre'], 409);
+            } else {
+                //obtenemos el permiso y llenamos el objeto                
                 $permiso = Permiso::findOrFail($id);
                 $permiso->nombre = $request->nombre;
-                if($permiso->update() >0){
-                    return response()->json(["status"=> 'Updated',
-                    "data"=> $permiso,"message"=>'Permiso actualizado...!'],202);
-                }else{
-                    return response()->json(["status"=> 'fail',"data"=> null,
-                    "message"=>"Error al intentar guardar el permiso"],409);
+                $permiso->ruta = $request->ruta;
+                $permiso->agregar = $request->agregar;
+                $permiso->editar = $request->editar;
+                $permiso->listar = $request->listar;
+                $permiso->eliminar = $request->eliminar;               
+
+                if ($permiso->update() > 0) {
+                    return response()->json(["status" => 'Updated',"data" => $permiso, 
+                    "message" => 'Permiso actualizado...!'], 202);
+                } else {
+                    return response()->json(["status" => 'fail', "data" => null,
+                        "message" => "Error al intentar actualizar el permiso"], 409);
                 }
-            }           
-        }catch(\Exception $e){
+            }
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
@@ -119,16 +128,16 @@ class PermisoController extends Controller
      */
     public function destroy(string $id)
     {
-        try{
+        try {
             $permiso = Permiso::findOrFail($id);
-            if($permiso->delete()>0){
-                return response()->json(["status"=> 'Deleted',
-                "data"=> null,"message"=>'Permiso eliminado...!'],205);
-            }else{
-                return response()->json(["status"=> 'Conflict',
-                "data"=> null,"message"=>' No se puede eliminar este permiso'],409);
+            if ($permiso->delete() > 0) {
+                return response()->json(["status" => 'Deleted',
+                    "data" => null, "message" => 'Permiso eliminado...!'], 205);
+            } else {
+                return response()->json(["status" => 'Conflict',
+                    "data" => null, "message" => ' No se puede eliminar este permiso'], 409);
             }
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }

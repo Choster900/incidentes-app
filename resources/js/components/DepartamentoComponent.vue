@@ -22,7 +22,7 @@
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} departamentos">
-                <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                <Column style="width: 3rem" :exportable="false"></Column>
                 <Column field="nombre" header="Departamento" sortable style="min-width:12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
@@ -112,10 +112,10 @@ export default {
                    //console.log(accion);
                    if(accion == "add"){
                        //peticion para guardar una marca
-                       /*if(this.existCategoria(me.categoria)){
-                         alert("Ya existe una categoria registrada con este nombre en la base de datos");
+                       if(this.existDepartamento(me.departamento)){
+                         alert("Ya existe un departamento registrado con este nombre en la base de datos");
                          return;
-                       }*/
+                       }
 
                        await this.axios.post(`/api/departamentos`,me.departamento)
                        .then(response =>{
@@ -127,10 +127,10 @@ export default {
                        })
                    }else{
 
-                    /*if(this.existMarca(me.marca)){
-                         alert("Ya existe una marca registrada con este nombre en la base de datos");
+                    if(this.existDepartamento(me.departamento)){
+                         alert("Ya existe un departamento registrado con este nombre en la base de datos");
                          return;
-                       }*/                    
+                       }                    
                     //peticion para actualizar marcas
                     await this.axios.put(`/api/departamentos/${me.departamento.id}`,me.departamento)
                        .then(response =>{

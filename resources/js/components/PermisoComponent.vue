@@ -22,8 +22,13 @@
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} permisos">
-                <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                <Column style="width: 3rem" :exportable="false"></Column>
                 <Column field="nombre" header="Permiso" sortable style="min-width:12rem"></Column>
+                <Column field="ruta" header="Ruta" style="min-width:12rem"></Column>
+                <Column field="agregar" header="Agregar" style="min-width:12rem"></Column>
+                <Column field="editar" header="Editar" style="min-width:12rem"></Column>
+                <Column field="listar" header="Listar" style="min-width:12rem"></Column>
+                <Column field="eliminar" header="Eliminar" style="min-width:12rem"></Column>
                 <Column :exportable="false">
                     <template #body="slotProps">
                         <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPermiso(slotProps.data)" />
@@ -46,23 +51,23 @@
             </div>
             <div class="formgrid grid row">
                 <div class="field col">
-                    <Checkbox v-model="permiso.agregar" :binary="true" />
-                    <label for="agregar" class="ml-2"> Agregar </label>
+                    <Checkbox v-model="permiso.agregar" :binary="true" update:modelValue="permiso.agregar" />
+                    <label for="agregar" class="ml-2">Agregar</label>
                 </div>
                 <div class="field col">
-                    <Checkbox v-model="permiso.editar" :binary="true" />
-                    <label for="editar" class="ml-2"> Editar </label>
+                    <Checkbox v-model="permiso.editar" :binary="true"/>
+                    <label for="editar" class="ml-2">Editar</label>
                 </div>                                 
             </div> 
             <br>
             <div class="formgrid grid row">
                 <div class="field col">
                     <Checkbox v-model="permiso.listar" :binary="true" />
-                    <label for="listar" class="ml-2"> Listar </label>
+                    <label for="listar" class="ml-2">Listar</label>
                 </div> 
                 <div class="field col">
                     <Checkbox v-model="permiso.eliminar" :binary="true" />
-                    <label for="eliminar" class="ml-2"> Eliminar </label>
+                    <label for="eliminar" class="ml-2">Eliminar</label>
                 </div> 
             </div>
             <small class="p-error" v-if="submitted && (!permiso.agregar && !permiso.editar && !permiso.listar && !permiso.eliminar)">Debe seleccionar por lo menos una opción.</small>                                     
@@ -99,14 +104,6 @@ export default {
             permisoDialog: ref(false)
            }
         },
-        computed:{
-           /* formTitle(){
-                return this.categoria.id == null?"Agregar Categoria":"Actualizar Categoria";
-            },
-            btnTitle(){
-                return this.categoria.id == null?"Guardar":"Actualizar";
-            }   */        
-        },
         methods:{
             async fetchPermisos(){
                 await this.axios.get(`/api/permisos`)
@@ -123,34 +120,30 @@ export default {
                 this.permiso.editar=false,
                 this.permiso.listar=false,
                 this.permiso.eliminar=false
-            },
+            },            
             openNew(){
-                this.permiso = {},
-                //this.resetPermiso,
+                //this.permiso = {},
+                this.resetPermiso,
+                this.permiso.id == null?this.resetPermiso:this.permiso={},
+                this.resetPermiso,
                 this.submitted = false,
-                this.permisoDialog = true
-            },
-            /*probar(){
-                //this.permiso = {}
-                console.log(this.permiso);
-                this.submitted = true,
-                this.permisoDialog = false,
-                this.permiso = {}
-            }, */           
+                this.permisoDialog = ref(true)
+            },          
             editPermiso(permiso){
                 this.permiso = {...permiso},
-                this.permisoDialog = true,                
+                this.permiso.agregar = Boolean(this.permiso.agregar),
+                this.permiso.editar = Boolean(this.permiso.editar),
+                this.permiso.listar = Boolean(this.permiso.listar),
+                this.permiso.eliminar = Boolean(this.permiso.eliminar),
+                console.log(this.permiso),
+                this.permisoDialog = ref(true),                
                 this.editedPermiso = this.permisos.indexOf(permiso);
-            },             
-            editedPermiso(permiso){
-                this.permiso = {...permiso},
-                this.permisoDialog = true,                
-                this.editedPermiso = this.permisos.indexOf(permiso);
-            },            
-
+                //this.resetPermiso                
+            },                    
             hideDialog(){
-                this.permisoDialog = false 
-                this.submitted = false                           
+                this.permisoDialog = ref(false), 
+                this.submitted = false,
+                this.resetPermiso                           
             }, 
             async saveOrUpdate(){
                 let me = this;
@@ -159,14 +152,8 @@ export default {
 
                 if(me.permiso.nombre && me.permiso.ruta && (me.permiso.agregar || me.permiso.editar || me.permiso.listar || me.permiso.eliminar)){
                    let accion = me.permiso.id == null? "add":"upd";
-                   //console.log(accion);
+                   console.log(accion);
                    if(accion == "add"){
-                       //peticion para guardar una rol
-                       /*if(this.existCategoria(me.categoria)){
-                         alert("Ya existe una categoria registrada con este nombre en la base de datos");
-                         return;
-                       }*/
-
                        await this.axios.post(`/api/permisos`,me.permiso)
                        .then(response =>{
                            if(response.status == 201){
@@ -192,8 +179,10 @@ export default {
                         console.log(errors);
                        })
                    }
-                   me.permisoDialog = false;
-                   me.permiso = {};
+                   this.resetPermiso
+                   me.permisoDialog = ref(false);
+                   
+                   //me.permiso = {};
                 }
             },
             async DeletePermiso(permiso){
